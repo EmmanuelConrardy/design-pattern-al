@@ -1,6 +1,6 @@
 # Roadmap Design Pattern team AL!
 
-Hello voici la roadmap pour l'apprentissage des design pattern.
+Hello voici la roadmap pour l'apprentissage des designs patterns.
 Elle pourra évoluer dans le temps mais elle nous permet de faire quelques estimations et de suivre notre avancement.
 
 # Design pattern
