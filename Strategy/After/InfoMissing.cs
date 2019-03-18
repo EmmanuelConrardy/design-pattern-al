@@ -8,16 +8,17 @@ namespace Strategy
         {
             {
                 if (string.IsNullOrEmpty(address.Address) ||
-                    string.IsNullOrEmpty(address.ZipCode) ||   )
+                    string.IsNullOrEmpty(address.ZipCode) ||
+                    IsTelMissing(address, siteContext) )
                 {   
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
 
-                var telMissing = IsTelMissing(address, siteContext);
-                if (telMissing)
-                    return true;
-
-                return false;
+                
             }
         }
 
