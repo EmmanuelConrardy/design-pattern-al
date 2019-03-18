@@ -24,7 +24,7 @@ namespace Strategy
 
         protected virtual bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
         {
-            if (string.IsNullOrEmpty(address.Tel))
+            if (string.IsNullOrEmpty(address.Tel) && siteContext.Culture != "BE")
             {
                 return true;
             }
