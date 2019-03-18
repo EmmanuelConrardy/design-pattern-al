@@ -7,7 +7,17 @@ namespace Strategy
         public virtual bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
             {
+                if (string.IsNullOrEmpty(address.Address) ||
+                    string.IsNullOrEmpty(address.ZipCode) ||   )
+                {   
+                    return true;
+                }
 
+                var telMissing = IsTelMissing(address, siteContext);
+                if (telMissing)
+                    return true;
+
+                return false;
             }
         }
 
@@ -47,6 +57,7 @@ namespace Strategy
 
         protected override bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
         {
+                return string.IsNullOrEmpty(address.Tel);
         }
     }
 }
