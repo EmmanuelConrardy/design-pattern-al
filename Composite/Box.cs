@@ -7,7 +7,8 @@ namespace Composite
     public class Box
     {
         //Maybe be we can be more abstract
-        public Book Book { get; set; } 
+        public Product Product { get; set; }
+
         private List<Box> _boxs;
 
         public Box()
@@ -19,12 +20,24 @@ namespace Composite
         {
             get
             {
-                if (Book != null) //hit leaf
-                    return Book.Price;
+                if (Product != null) //hit leaf
+                    return Product.Price;
 
                 return _boxs.Sum(p => p.Price);
             }
         }
+
+        public int TechnicalPrice
+        {
+            get
+            {
+                if (Product != null && Product.Type == "technique")
+                    return Product.Price;
+
+                return _boxs.Sum(p => p.TechnicalPrice);
+            }
+        }
+
 
         public void AddBox(Box box)
         {

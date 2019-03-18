@@ -37,7 +37,7 @@ namespace CompositeTests
             order.Billing = new Billing();
 
             var box = new Box(); // container
-            box.Book = new Book(price: 10); // set leaf
+            box.Product = new Book(price: 10); // set leaf
             order.Boxes = box;
 
             //Act
@@ -58,11 +58,11 @@ namespace CompositeTests
             var BookLeafOne = new Book(price: 10); // Leaf
 
             var boxLeaf = new Box(); // Container 
-            boxLeaf.Book = BookLeafOne;
+            boxLeaf.Product = BookLeafOne;
 
             var boxLeafTwo = new Box();
             var BookLeafTwo = new Book(price: 40); // leaf
-            boxLeafTwo.Book = BookLeafTwo;
+            boxLeafTwo.Product = BookLeafTwo;
 
             boxContainer.AddBox(boxLeaf);
             boxContainer.AddBox(boxLeafTwo);
@@ -90,10 +90,55 @@ namespace CompositeTests
         //Changer le model Box pour utiliser l'abstraction
 
         [TestMethod]
-        public void Order_With_Two_Book_And_Two_Phone_Return_130()
+        public void Order_With_Two_Book_And_Two_Phone_Return_1550()
         {
             //Arrange
-            
+            var order = new Order(); // head
+            order.Billing = new Billing();
+
+            var boxHead = new Box(); // Container 
+            var BookLeafOne = new Book(price: 10); // Leaf
+
+            var boxLeaf = new Box(); // Container 
+            boxLeaf.Product = BookLeafOne;
+
+            var boxLeafTwo = new Box();
+            var BookLeafTwo = new Book(price: 40); // leaf
+            boxLeafTwo.Product = BookLeafTwo;
+
+            var boxPhoneLeaf = new Box(); // Container
+
+            var boxContainerPhone = new Box(); // Phone 1
+            var phoneLeafOne = new Phone(price: 1000);
+            boxContainerPhone.Product = phoneLeafOne;
+
+            var boxContainerPhoneTwo = new Box(); // Phone 2
+            var phoneLeafTwo = new Phone(price: 500);
+            boxContainerPhoneTwo.Product = phoneLeafTwo;
+            var boxBook = new Box();
+
+            boxBook.AddBox(boxLeaf);
+            boxBook.AddBox(boxLeafTwo);
+
+            boxPhoneLeaf.AddBox(boxContainerPhone);
+            boxPhoneLeaf.AddBox(boxContainerPhoneTwo);
+
+            boxHead.AddBox(boxPhoneLeaf);
+            boxHead.AddBox(boxBook);
+
+            order.Boxes = boxHead;
+
+
+
+
+            //A  ct
+            var result = order.Price;
+
+            //Assert
+            Assert.AreEqual(1550, result);
+
+            //Arrange
+
             //Create composite
 
             //Act
@@ -108,7 +153,31 @@ namespace CompositeTests
         //TODO next
         //create a test qui retourne le prix des produits techniques.
 
+        [TestMethod]
+        public void Return_Price_Of_Technical_Products()
+        {
+            var order = new Order(); // head
 
+            var boxContainerPhone = new Box(); // Phone 1
+            var phoneLeafOne = new Phone(price: 1000);
+            boxContainerPhone.Product = phoneLeafOne;
+            
+            var boxContainerBook = new Box(); // Book 1
+            var bookLeafOne = new Book(price: 1000);
+            boxContainerBook.Product = bookLeafOne;
 
+            var headBox = new Box();
+            headBox.AddBox(boxContainerPhone);
+            headBox.AddBox(boxContainerBook);
+
+            order.Boxes = headBox;
+
+            //A  ct
+            var result = order.TechnicalPrice;
+
+            //Assert
+            Assert.AreEqual(1000, result);
+            
+        }
     }
 }

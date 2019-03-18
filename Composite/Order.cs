@@ -17,5 +17,13 @@
             }
         }
         public Box Boxes { get; set; }
+
+        public decimal TechnicalPrice
+        {
+            get
+            {
+                return Boxes.TechnicalPrice;
+            }
+        }
     }
 }
