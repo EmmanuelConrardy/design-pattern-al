@@ -2,23 +2,23 @@
 {
     public class Book
     {
-        public Book(int price)
+        public Book(decimal price)
         {
             Price = price;
         }
 
-        public int Price { get; internal set; }
+        public decimal Price { get; internal set; }
     }
 
     //Can we find an abstraction here ?
 
     public class Phone
     {
-        public Phone(int price)
+        public Phone(decimal price)
         {
             Price = price;
         }
 
-        public int Price { get; internal set; }
+        public decimal Price { get; internal set; }
     }
 }

@@ -8,7 +8,7 @@ namespace CompositeTests
     [TestClass]
     public class BoxesCompositeTests
     {
-        private Box NoBoxes => new Box();
+        private Box NoBoxes => new BoxContainer();
 
         [TestInitialize]
         public void Setup()
@@ -20,7 +20,7 @@ namespace CompositeTests
             //Arrange
             var order = new Order(); // head
             order.Billing = new Billing();
-            order.Boxes = NoBoxes;
+            order.BoxeHead = NoBoxes;
 
             //Act
             var result = order.Price;
@@ -36,9 +36,9 @@ namespace CompositeTests
             var order = new Order(); // head
             order.Billing = new Billing();
 
-            var box = new Box(); // container
-            box.Book = new Book(price: 10); // set leaf
-            order.Boxes = box;
+            var box = new BoxLeaf(); // leaf
+            box.Book = new Book(10);
+            order.BoxeHead = box;
 
             //Act
             var result = order.Price;
@@ -51,29 +51,32 @@ namespace CompositeTests
         public void Order_With_Composite_Of_Boxes_Should_Return_50()
         {
             //Arrange
-            var order = new Order(); // head
-            order.Billing = new Billing();
+            var order = new Order();
 
-            var boxContainer = new Box(); // Container 
-            var BookLeafOne = new Book(price: 10); // Leaf
+            var boxhead = new BoxContainer(); // head / Container 
 
-            var boxLeaf = new Box(); // Container 
-            boxLeaf.Book = BookLeafOne;
+            var boxLeaf = aBoxLeaf()
+                .WithBookOfPrice(10)
+                .Build();
 
-            var boxLeafTwo = new Box();
-            var BookLeafTwo = new Book(price: 40); // leaf
-            boxLeafTwo.Book = BookLeafTwo;
+            var boxLeafTwo = new BoxLeaf();
+            boxLeafTwo.Book = new Book(price: 40); ;
 
-            boxContainer.AddBox(boxLeaf);
-            boxContainer.AddBox(boxLeafTwo);
+            boxhead.AddBox(boxLeaf);
+            boxhead.AddBox(boxLeafTwo);
 
-            order.Boxes = boxContainer;
+            order.BoxeHead = boxhead;
 
             //Act
             var result = order.Price;
 
             //Assert
             Assert.AreEqual(50, result);
+        }
+
+        private BoxLeafBuilder aBoxLeaf()
+        {
+            return new BoxLeafBuilder();
         }
 
         //Ecrire un test avec une commande contenant 2 Box
@@ -89,26 +92,90 @@ namespace CompositeTests
         //Ajouter le model manquant, définir une abstraction Product
         //Changer le model Box pour utiliser l'abstraction
 
+        //Make it pass change the model if needed
         [TestMethod]
         public void Order_With_Two_Book_And_Two_Phone_Return_130()
         {
             //Arrange
-            
-            //Create composite
+            var order = new Order();
+
+            var boxhead = new BoxContainer(); // head 
+
+            //Book Branch
+            var boxOfBook = new BoxContainer();
+            var boxLeafBookOne = aBoxLeaf()
+                .WithBookOfPrice(10)
+                .Build();
+            var boxLeafBookTwo = aBoxLeaf()
+               .WithBookOfPrice(40)
+               .Build();
+            boxOfBook.AddBox(boxLeafBookOne);
+            boxOfBook.AddBox(boxLeafBookTwo);
+
+            //Phone branch
+            var boxOfPhone = new BoxContainer();
+            var boxLeafPhoneOne = aBoxLeaf()
+                .WithPhoneOfPrice(100)
+                .Build();
+            var boxLeafPhoneTwo = aBoxLeaf()
+               .WithPhoneOfPrice(400)
+               .Build();
+
+            boxOfPhone.AddBox(boxLeafPhoneOne);
+            boxOfPhone.AddBox(boxLeafPhoneTwo);
+
+            boxhead.AddBox(boxOfBook);
+            boxhead.AddBox(boxOfPhone);
+
+            order.BoxeHead = boxhead;
 
             //Act
-
-            //Get Price
+            var result = order.Price;
 
             //Assert
+            Assert.AreEqual(550, result);
 
-            //Check price return 130
         }
 
         //TODO next
         //create a test qui retourne le prix des produits techniques.
 
+        [TestMethod]
+        public void ReNameMe()
+        {
 
+        }
 
+    }
+
+    internal class BoxLeafBuilder
+    {
+        private BoxLeaf box {get; set; }
+        private Book Book { get; set; }
+        public Phone Phone { get; private set; }
+
+        public BoxLeafBuilder()
+        {
+            box = new BoxLeaf();
+        }
+
+        public BoxLeafBuilder WithBookOfPrice(decimal price)
+        {
+            Book = new Book(price);
+            return this;
+        }
+
+        public BoxLeaf Build()
+        {
+            box.Book = Book;
+            box.Phone = Phone;
+            return box;
+        }
+
+        public BoxLeafBuilder WithPhoneOfPrice(decimal price)
+        {
+            Phone = new Phone(price);
+            return this;
+        }
     }
 }

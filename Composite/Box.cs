@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Composite
 {
-    public class Box
+    public interface Box
     {
         //Maybe be we can be more abstract
-        public Book Book { get; set; } 
+        decimal Price { get; }
+
+        void AddBox(Box box);
+
+    }
+
+    public class BoxContainer : Box //node
+    {
+        //Maybe be we can be more abstract
         private List<Box> _boxs;
 
-        public Box()
+        public BoxContainer()
         {
             _boxs = new List<Box>();
         }
 
-        public int Price
+        public decimal Price
         {
             get
             {
-                if (Book != null) //hit leaf
-                    return Book.Price;
-
                 return _boxs.Sum(p => p.Price);
             }
         }
@@ -30,6 +34,29 @@ namespace Composite
         {
             _boxs.Add(box);
 
+        }
+    }
+    public class BoxLeaf : Box//leaf
+    {
+        //Maybe be we can be more abstract
+        public Book Book { get; set; }
+
+        public BoxLeaf(){ }
+
+        public decimal Price
+        {
+            get
+            {
+             //bad : ( should do something with the model   
+                return Book?.Price ?? Phone.Price;
+            }
+        }
+
+        public Phone Phone { get; set; }
+
+        public void AddBox(Box box)
+        {
+            //do nothing
         }
     }
 }

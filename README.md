@@ -69,3 +69,4 @@ Un pattern peut être "checked" quand dans un projet il y a :
 - https://stackedit.io/app#
 - https://refactoring.guru/design-patterns/catalog
 - https://visualstudio.microsoft.com/fr/
+- https://dotnet.microsoft.com/download/dotnet-framework-runtime/net472

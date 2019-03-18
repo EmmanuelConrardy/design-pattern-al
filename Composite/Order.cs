@@ -4,7 +4,7 @@
     {
         public Order()
         {
-            Boxes = new Box();
+            BoxeHead = new BoxContainer();
         }
 
         public Billing Billing { get; set; }
@@ -13,9 +13,9 @@
         {
             get
             {
-                return Boxes.Price;
+                return BoxeHead.Price;
             }
         }
-        public Box Boxes { get; set; }
+        public Box BoxeHead { get; set; }
     }
 }
