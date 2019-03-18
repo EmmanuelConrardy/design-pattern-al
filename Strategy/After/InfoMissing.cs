@@ -4,40 +4,29 @@ namespace Strategy
 {
     public class InfoMissing
     {
-        public virtual bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
+        public virtual Boolean IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            if (string.IsNullOrEmpty(address.Address))
-                return true;
-
-            if (string.IsNullOrEmpty(address.ZipCode))
-                return true;
-
-            var telMissing = IsTelMissing(address, siteContext);
-            if (telMissing)
-                return true;
-
-            return false;
-        }
-
-        protected virtual bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
-        {
-            return string.IsNullOrEmpty(address.Tel) && siteContext.Culture != "BE";
+            if (address.Address.Equals("") || address.ZipCode == null ||
+                address.Tel == null)
+            {
+                return (true);
+            }
+            return (false);
         }
     }
 
     public class InfoMissingStrategy
     {
-        public InfoMissing GetInfoMissingBy(SiteContext site)
+        public InfoMissing GetInfoMissingBy(SiteContext siteContext)
         {
-            switch (site.Culture)
+            if(siteContext.Culture == "ES")
             {
-                case "ES":
-                    return new InfoMissingOfSpain();
-                case "BE":
-                    return new InfoMissingOfBelgium();
-                default:
-                    return new InfoMissing();
+                return (new InfoMissingOfSpain());
+            }else if(siteContext.Culture == "BE")
+            {
+                return (new InfoMissingOfBelgium());
             }
+            return (new InfoMissing());
         }
     }
 
@@ -45,13 +34,11 @@ namespace Strategy
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            if (string.IsNullOrEmpty(address.DocumentType))
-                return true;
-
-            if (string.IsNullOrEmpty(address.TaxNumber))
-                return true;
-
-            return base.IsMissingInfo(address, siteContext);
+            if (address.TaxNumber.Equals("") || address.DocumentType == "")
+            {
+                return (true);
+            }
+            return (false);
         }
     }
 
@@ -59,12 +46,11 @@ namespace Strategy
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            return base.IsMissingInfo(address, siteContext);
-        }
-
-        protected override bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
-        {
-            return false;
+            if (address.Tel == "")
+            {
+                return (false);
+            }
+            return (false);
         }
     }
 }
