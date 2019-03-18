@@ -1,15 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Singleton;
 
 namespace SingletonTests
 {
-    [TestClass]
+    [TestFixture]
     public class SingletonBadTests
     {
         /// <summary>
         /// THIS IS WRONG DO NOT WRITE THIS KIND OF TEST
         /// </summary>
-        [TestMethod]
+        [Test]
         public void SingletonBasic_Add_Message_Then_Get_Message_Really_Bad_Test()
         {
             //Arrange
@@ -28,7 +28,7 @@ namespace SingletonTests
         //This test will be executed thousand of time so we will insert thousand of rows in database
 
         //One way to solve this is to stubs it
-        [TestMethod]
+        [Test]
         public void SingletonBasic_Add_Message_Then_Get_Message_Not_Really_Bad_Test()
         {
             //Arrange

@@ -1,12 +1,12 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Observer;
 
 namespace ObserverTests
 {
-    [TestClass]
+    [TestFixture]
     public class OberverTests
     {
-        [TestMethod]
+        [Test]
         public void Observer_Teacher_Teach_And_CheckIfStudentIsListening_Return_False_When_A_StudentSleeping()
         {
             //Arrange
@@ -23,10 +23,10 @@ namespace ObserverTests
         }
 
         //Todo 1 :
-        //Creer un test avec tous les étudiants Awake
+        //Creer un test avec tous les ï¿½tudiants Awake
 
         //Todo 2 :
-        //Creer un étudiant affamé (StudentHungry) qui écoute une fois sur deux que le Teacher Teach()
-        //écrire le test associés en premier
+        //Creer un ï¿½tudiant affamï¿½ (StudentHungry) qui ï¿½coute une fois sur deux que le Teacher Teach()
+        //ï¿½crire le test associï¿½s en premier
     }
 }

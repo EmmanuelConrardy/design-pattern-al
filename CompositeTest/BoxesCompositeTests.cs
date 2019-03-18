@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace CompositeTests
 {
-    [TestClass]
+    [TestFixture]
     public class BoxesCompositeTests
     {
         private Box NoBoxes => new Box();
 
-        [TestInitialize]
+        [SetUp]
         public void Setup()
         {
         }
-        [TestMethod]
+        [Test]
         public void Order_With_No_Boxes_Should_Return_Price_Equal_Zero()
         {
             //Arrange
@@ -29,7 +29,7 @@ namespace CompositeTests
             Assert.AreEqual(0, result);
         }
 
-        [TestMethod]
+        [Test]
         public void Order_With_One_Box_Price_Of_Ten_Should_Return_Price_Equal_Ten()
         {
             //Arrange
@@ -47,7 +47,7 @@ namespace CompositeTests
             Assert.AreEqual(10, result);
         }
 
-        [TestMethod]
+        [Test]
         public void Order_With_Composite_Of_Boxes_Should_Return_50()
         {
             //Arrange
@@ -89,7 +89,7 @@ namespace CompositeTests
         //Ajouter le model manquant, définir une abstraction Product
         //Changer le model Box pour utiliser l'abstraction
 
-        [TestMethod]
+        [Test]
         public void Order_With_Two_Book_And_Two_Phone_Return_130()
         {
             //Arrange

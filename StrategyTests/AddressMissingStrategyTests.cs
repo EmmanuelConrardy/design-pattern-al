@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Strategy;
 
 namespace SomthingsElse
 {
-    [TestClass]
+    [TestFixture]
     public class AddressMissingStrategyTests
     {
-        [TestMethod]
+        [Test]
         public void Should_Return_True_When_Address_IsMissing()
         {
             //Arrange
@@ -34,7 +34,7 @@ namespace SomthingsElse
             };
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Return_True_When_ZipCode_IsMissing()
         {
             //Arrange
@@ -50,7 +50,7 @@ namespace SomthingsElse
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Return_True_When_Tel_IsMissing()
         {
             //Arrange
@@ -66,7 +66,7 @@ namespace SomthingsElse
             Assert.IsTrue(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Return_True_When_TaxNumber_IsMissing_And_Site_Culture_Equal_ES()
         {
             //Arrange
@@ -86,7 +86,7 @@ namespace SomthingsElse
             Assert.IsTrue(infoMissing.GetType().Equals(typeof(InfoMissingOfSpain)));
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Return_False_When_Tel_Is_Missing_And_Site_Culture_Equals_BE()
         {
             //Arrange
@@ -104,7 +104,7 @@ namespace SomthingsElse
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Should_Return_True_When_DocumentType_IsMissing_And_Site_Culture_Equal_ES()
         {
             //Arrange
@@ -125,9 +125,9 @@ namespace SomthingsElse
 
         }
 
-        [DataRow("FR")]
-        [DataRow("BE")]
-        [TestMethod]
+        [TestCase("FR")]
+        [TestCase("BE")]
+        [Test]
         public void Should_Return_False_When_DocumentType_IsMissing_And_Site_Culture_Equal_(string culture)
         {
             //Arrange
@@ -145,9 +145,9 @@ namespace SomthingsElse
             Assert.IsFalse(result);
         }
 
-        [DataRow("FR")]
-        [DataRow("BE")]
-        [TestMethod]
+        [TestCase("FR")]
+        [TestCase("BE")]
+        [Test]
         public void Should_Return_False_When_TaxNumber_IsMissing_And_Site_Culture_Equal_(string culture)
         {
             //Arrange
@@ -165,7 +165,7 @@ namespace SomthingsElse
             Assert.IsFalse(result);
         }
 
-        [TestMethod]
+        [Test]
         public void InfoMissingStrategy_Should_Return_InfoMissingOfSpain()
         {
             //Arrange
@@ -185,7 +185,7 @@ namespace SomthingsElse
             Assert.IsTrue(infoMissing.GetType().Equals(typeof(InfoMissingOfSpain)));
         }
 
-        [TestMethod]
+        [Test]
         public void InfoMissingStrategy_Should_Return_InfoMissingOfBelgium_Tel_Is_Not_Mandatory()
         {
             //Arrange
