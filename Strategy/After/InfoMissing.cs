@@ -39,7 +39,18 @@ namespace Strategy
     {
         public InfoMissing GetInfoMissingBy(SiteContext site)
         {
-
+            if (site.Culture == "ES")
+            {
+                return new InfoMissingOfSpain();
+            }
+            else if (site.Culture == "BE")
+            {
+                return new InfoMissingOfBelgium();
+            }
+            else
+            {
+                return new InfoMissing();
+            }
         }
     }
 
@@ -47,18 +58,26 @@ namespace Strategy
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
+            if (string.IsNullOrEmpty(address.DocumentType))
+                return true;
 
+            if (string.IsNullOrEmpty(address.TaxNumber))
+                return true;
+
+            return base.IsMissingInfo(address, siteContext);
+        }
     }
 
     public class InfoMissingOfBelgium : InfoMissing
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-        }
+                return base.IsMissingInfo(address, siteContext);
+            }
 
         protected override bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
         {
-                return string.IsNullOrEmpty(address.Tel);
+                return false;
         }
     }
 }
