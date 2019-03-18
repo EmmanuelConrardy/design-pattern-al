@@ -6,22 +6,21 @@ namespace Strategy
     {
         public virtual bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            if (string.IsNullOrEmpty(address.Address))
-                return true;
+            {
 
-            if (string.IsNullOrEmpty(address.ZipCode))
-                return true;
-
-            var telMissing = IsTelMissing(address, siteContext);
-            if (telMissing)
-                return true;
-
-            return false;
+            }
         }
 
         protected virtual bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
         {
-            return string.IsNullOrEmpty(address.Tel) && siteContext.Culture != "BE";
+            if (string.IsNullOrEmpty(address.Tel))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -29,15 +28,7 @@ namespace Strategy
     {
         public InfoMissing GetInfoMissingBy(SiteContext site)
         {
-            switch (site.Culture)
-            {
-                case "ES":
-                    return new InfoMissingOfSpain();
-                case "BE":
-                    return new InfoMissingOfBelgium();
-                default:
-                    return new InfoMissing();
-            }
+
         }
     }
 
@@ -45,26 +36,17 @@ namespace Strategy
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            if (string.IsNullOrEmpty(address.DocumentType))
-                return true;
 
-            if (string.IsNullOrEmpty(address.TaxNumber))
-                return true;
-
-            return base.IsMissingInfo(address, siteContext);
-        }
     }
 
     public class InfoMissingOfBelgium : InfoMissing
     {
         public override bool IsMissingInfo(AddressViewModel address, SiteContext siteContext)
         {
-            return base.IsMissingInfo(address, siteContext);
         }
 
         protected override bool IsTelMissing(AddressViewModel address, SiteContext siteContext)
         {
-            return false;
         }
     }
 }
