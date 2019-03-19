@@ -1,5 +1,6 @@
 ﻿using Composite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace CompositeTests
@@ -116,10 +117,15 @@ namespace CompositeTests
             var boxLeafPhoneTwo = aBoxLeaf()
                .WithPhoneOfPrice(400)
                .Build();
+            var boxOfComputer = new BoxContainer();
+            var boxLeafComputer = aBoxLeaf()
+               .WithComputerOfPrice(1400)
+               .Build();
 
             boxOfPhone.AddBox(boxLeafPhoneOne, boxLeafPhoneTwo);
+            boxOfComputer.AddBox(boxLeafComputer);
 
-            boxhead.AddBox(boxOfBook, boxOfPhone);
+            boxhead.AddBox(boxOfBook, boxOfPhone, boxOfComputer);
 
             order.BoxeHead = boxhead;
 
@@ -127,7 +133,7 @@ namespace CompositeTests
             var result = order.Price;
 
             //Assert
-            Assert.AreEqual(550, result);
+            Assert.AreEqual(1950, result);
         }
 
         //TODO next
@@ -144,8 +150,7 @@ namespace CompositeTests
     internal class BoxLeafBuilder
     {
         private BoxLeaf box {get; set; }
-        private Book Book { get; set; }
-        public Phone Phone { get; private set; }
+        private Product Product { get; set; }
 
         public BoxLeafBuilder()
         {
@@ -154,20 +159,25 @@ namespace CompositeTests
 
         public BoxLeafBuilder WithBookOfPrice(decimal price)
         {
-            Book = new Book(price);
+            Product = new Book(price);
             return this;
         }
 
         public BoxLeaf Build()
         {
-            box.Book = Book;
-            box.Phone = Phone;
+            box.Product = Product;
             return box;
         }
 
         public BoxLeafBuilder WithPhoneOfPrice(decimal price)
         {
-            Phone = new Phone(price);
+            Product = new Phone(price);
+            return this;
+        }
+
+        public BoxLeafBuilder WithComputerOfPrice(decimal price)
+        {
+            Product = new Computer(price);
             return this;
         }
     }

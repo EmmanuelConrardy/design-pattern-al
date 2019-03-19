@@ -23,11 +23,17 @@
         }
     }
 
-    //Can we find an abstraction here ?
-
     public class Phone : Product
     {
         public Phone(decimal price) : base(price)
+        {
+            Type = Category.Technical;
+        }
+    }
+
+    public class Computer : Product
+    {
+        public Computer(decimal price) : base(price)
         {
             Type = Category.Technical;
         }
