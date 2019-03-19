@@ -1,24 +1,35 @@
 ﻿namespace Composite
 {
-    public class Book
+    public abstract class Product
     {
-        public Book(decimal price)
+        public Product(decimal price)
         {
             Price = price;
         }
+        public decimal Price { get; set; }
+        public Category Type { get; set; }
+    }
 
-        public decimal Price { get; internal set; }
+    public enum Category
+    {
+        Technical, Editorial
+    }
+
+    public class Book : Product
+    {
+        public Book(decimal price) : base(price)
+        {
+            Type = Category.Editorial;
+        }
     }
 
     //Can we find an abstraction here ?
 
-    public class Phone
+    public class Phone : Product
     {
-        public Phone(decimal price)
+        public Phone(decimal price) : base(price)
         {
-            Price = price;
+            Type = Category.Technical;
         }
-
-        public decimal Price { get; internal set; }
     }
 }

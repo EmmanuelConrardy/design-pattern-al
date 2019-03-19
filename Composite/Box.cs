@@ -7,6 +7,7 @@ namespace Composite
     {
         //Maybe be we can be more abstract
         decimal Price { get; }
+        decimal ProductPrice { get; }
 
         void AddBox(Box box);
 
@@ -30,6 +31,14 @@ namespace Composite
             }
         }
 
+        public decimal ProductPrice
+        {
+            get
+            {
+                return _boxs.Sum(p => p.ProductPrice);
+            }
+        }
+
         public void AddBox(Box box)
         {
             _boxs.Add(box);
@@ -49,7 +58,17 @@ namespace Composite
         //Maybe be we can be more abstract
         public Book Book { get; set; }
 
+        public Product Product { get; set; }
+
         public BoxLeaf(){ }
+
+        public decimal ProductPrice
+        {
+            get
+            {
+                return Product.Price;
+            }
+        }
 
         public decimal Price
         {
