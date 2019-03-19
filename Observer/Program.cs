@@ -16,6 +16,8 @@ namespace Observer
 
             //Act
             teacher.Teach(); //Notify
+
+            Console.ReadLine();
         }
     }
 }
