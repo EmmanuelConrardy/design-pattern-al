@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Composite;
+﻿using Composite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace CompositeTests
 {
@@ -19,7 +18,6 @@ namespace CompositeTests
         {
             //Arrange
             var order = new Order(); // head
-            order.Billing = new Billing();
             order.BoxeHead = NoBoxes;
 
             //Act
@@ -34,10 +32,9 @@ namespace CompositeTests
         {
             //Arrange
             var order = new Order(); // head
-            order.Billing = new Billing();
 
-            var box = new BoxLeaf(); // leaf
-            box.Book = new Book(10);
+            var box = aBoxLeaf().WithBookOfPrice(10).Build();
+
             order.BoxeHead = box;
 
             //Act
@@ -59,8 +56,7 @@ namespace CompositeTests
                 .WithBookOfPrice(10)
                 .Build();
 
-            var boxLeafTwo = new BoxLeaf();
-            boxLeafTwo.Book = new Book(price: 40); ;
+            var boxLeafTwo = aBoxLeaf().WithBookOfPrice(40).Build();
 
             boxhead.AddBox(boxLeaf);
             boxhead.AddBox(boxLeafTwo);
@@ -109,8 +105,8 @@ namespace CompositeTests
             var boxLeafBookTwo = aBoxLeaf()
                .WithBookOfPrice(40)
                .Build();
-            boxOfBook.AddBox(boxLeafBookOne);
-            boxOfBook.AddBox(boxLeafBookTwo);
+
+            boxOfBook.AddBox(boxLeafBookOne, boxLeafBookTwo);
 
             //Phone branch
             var boxOfPhone = new BoxContainer();
@@ -121,11 +117,9 @@ namespace CompositeTests
                .WithPhoneOfPrice(400)
                .Build();
 
-            boxOfPhone.AddBox(boxLeafPhoneOne);
-            boxOfPhone.AddBox(boxLeafPhoneTwo);
+            boxOfPhone.AddBox(boxLeafPhoneOne, boxLeafPhoneTwo);
 
-            boxhead.AddBox(boxOfBook);
-            boxhead.AddBox(boxOfPhone);
+            boxhead.AddBox(boxOfBook, boxOfPhone);
 
             order.BoxeHead = boxhead;
 
@@ -134,7 +128,6 @@ namespace CompositeTests
 
             //Assert
             Assert.AreEqual(550, result);
-
         }
 
         //TODO next

@@ -35,6 +35,14 @@ namespace Composite
             _boxs.Add(box);
 
         }
+
+        public void AddBox(params Box[] boxes)
+        {
+            foreach (var box in boxes)
+            {
+                _boxs.Add(box);
+            }
+        }
     }
     public class BoxLeaf : Box//leaf
     {
