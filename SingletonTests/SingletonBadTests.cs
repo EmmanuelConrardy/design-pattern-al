@@ -6,6 +6,14 @@ namespace SingletonTests
     [TestClass]
     public class SingletonBadTests
     {
+        [TestMethod]
+        public void Singleton_Should_Be_The_Same_Instance()
+        {
+            var instanceOne = MyRepoSingleton.GetInstance();
+            var instanceTwo = MyRepoSingleton.GetInstance();
+
+            Assert.AreSame(instanceOne, instanceTwo);
+        }
         /// <summary>
         /// THIS IS WRONG DO NOT WRITE THIS KIND OF TEST
         /// </summary>
