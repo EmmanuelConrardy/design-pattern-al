@@ -7,3 +7,5 @@ Design patterns can speed up the development process by providing tested, proven
 Often, people only understand how to apply certain software design techniques to certain problems. These techniques are difficult to apply to a broader range of problems. Design patterns provide general solutions, documented in a format that doesn't require specifics tied to a particular problem.
 
 In addition, patterns allow developers to communicate using well-known, well understood names for software interactions. Common design patterns can be improved over time, making them more robust than ad-hoc designs.
+
+source : https://sourcemaking.com/design_patterns
