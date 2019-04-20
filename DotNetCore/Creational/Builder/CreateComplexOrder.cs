@@ -53,13 +53,19 @@ namespace BuilderPattern
             var orderSecondByTelescopicConstructor = new Order(tax,items,address){
             };
 
-            var orderthirdByTelescopicConstructor = new Order(tax,items){
-                Address = new Address()
+            //Or like this...
+            var orderThirdByTelescopicConstructor = new Order(tax,items){
+                Address = new Address(){
+                    AddressLine = "3 rue des pyramides",
+                                Zipcode = "75001",
+                                City = "PARIS",
+                                Country = 2
+                }
             };
 
             //A lot of new operator everywhere look like creational responsability is not respected
             //We can see some duplication as well If we continue change the code will be harder
-            //We can see that the seond instance of order use a telescopic constructor, get rid of it !
+            //We can see some telescopic constructor, get rid of it !
             //Take a look at the region with design and refactor this test
         }
         #endregion
