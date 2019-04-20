@@ -7,10 +7,11 @@ namespace BuilderPattern
 {
     public class CreateComplexOrder
     {
-        #region without design
+        #region Without design
         [Fact]
-        public void Use_Builder_Pattern()
+        public void Use_Builder_Without_Design_Pattern()
         {
+            //You can instanciate it like this
             var order = new Order(){
                 Tax = new Tax(){
                     Rate = 20,
@@ -31,40 +32,41 @@ namespace BuilderPattern
                 }
             };
 
-            var orderSecond = new Order(){
-                Tax = new Tax(){
-                    Rate = 20,
-                    Country = 1 // FR
-                },
-                Items = new List<Item>(){
-                    new Item(){
-                        Price = 10,
-                        Id = 1,
-                        Name = "Plate"
-                    },
-                    new Item(){
-                        Price = 2,
-                        Id = 3,
-                        Name = "bottle"
-                    },
-                },
-                Address = new Address(){
-                    AddressLine = "2 backer street",
-                    Zipcode = "KJ87C0",
-                    City = "London",
-                    Country = 2
-                }
+            //Or like this
+            var tax = new Tax(){
+                                Rate = 20,
+                                Country = 1 // FR
+                            };
+            var items = new List<Item>(){
+                                new Item(){
+                                    Price = 10,
+                                    Id = 1,
+                                    Name = "Plate"
+                                }};
+            var address = new Address(){
+                                AddressLine = "2 backer street",
+                                Zipcode = "KJ87C0",
+                                City = "London",
+                                Country = 2
+                            };
+
+            var orderSecondByTelescopicConstructor = new Order(tax,items,address){
+            };
+
+            var orderthirdByTelescopicConstructor = new Order(tax,items){
+                Address = new Address()
             };
 
             //A lot of new operator everywhere look like creational responsability is not respected
             //We can see some duplication as well If we continue change the code will be harder
+            //We can see that the seond instance of order use a telescopic constructor, get rid of it !
             //Take a look at the region with design and refactor this test
         }
         #endregion
 
         #region With Design
 
-        //An interface with all the "steps" to build our object
+        //An fluent interface with all the "steps" to build our object
         //We return the interface after each step to create a kind of "fluent" build
         public interface IOrderBuilder
         {
@@ -83,10 +85,6 @@ namespace BuilderPattern
             {
                 _order = new Order();
             }
-            public Order Build()
-            {
-                return _order;
-            }
 
             public IOrderBuilder BuildAddress(string addressLine, string Zipcode, string city, int country)
             {
@@ -104,6 +102,11 @@ namespace BuilderPattern
             {
                 _order.Tax = new Tax(tax,country);
                 return this;
+            }
+
+             public Order Build()
+            {
+                return _order;
             }
         }
 
@@ -134,18 +137,36 @@ namespace BuilderPattern
             //The down side it's it need a lot of code / effort to implement this
         }
 
+        //A small factory
         private static Item NewItem(string name, decimal price, int id)
         {
             return new Item(name, price, id);
         }
         #endregion
 
+        //Our models
         public class Order{
+            public Order(){ }
+            public Order(Tax tax)
+            {
+                Tax = tax;
+            }
+            public Order(Tax tax, List<Item> items)
+            {
+                Tax = tax;
+                Items = items;
+            }
+            public Order(Tax tax, List<Item> items, Address address)
+            {
+                Tax = tax;
+                Items = items;
+                Address = address;
+            }
+
             public Tax Tax {get; set;}
             public List<Item> Items {get; set;}
             public Address Address {get; set;}
         }
-
         public class Tax{
             public Tax() {}
             public Tax(int rate, int country)
@@ -157,7 +178,6 @@ namespace BuilderPattern
             public decimal Rate {get; set;}
             public decimal Country {get; set;}
         }
-
         public class Item{
             public Item(){}
             public Item(string name, decimal price, int id)
@@ -171,7 +191,6 @@ namespace BuilderPattern
             public int Id {get; set;}
             public string Name {get; set;}
         }
-
         public class Address{
             public Address(){}
             public Address(string addressLine, string zipcode, string city, int country)
