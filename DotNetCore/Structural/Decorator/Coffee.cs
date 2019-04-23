@@ -5,25 +5,28 @@ using Xunit;
 namespace Decorator
 {
     #region without_design
-    [Fact]
-    public void Decorator_Espresso_WithoutDesign()
-    {
-        var coffee = new Espresso();
+    public class test {
+        [Fact]
+        public void Decorator_Espresso_WithoutDesign()
+        {
+            var coffee = new Espresso();
 
-        var result = coffee.GetCost();
+            var result = coffee.GetCost();
 
-        Assert.Equals(2.99, result);
+            Assert.Equal(2.99, result);
+        }
+
+        [Fact]
+        public void Decorator_EspressoWithMilk_WithoutDesign()
+        {
+            var coffee = new EspressoWithMilk();
+
+            var result = coffee.GetCost();
+
+            Assert.Equal(3.99, result);
+        }
     }
-
-    [Fact]
-    public void Decorator_EspressoWithMilk_WithoutDesign()
-    {
-        var coffee = new EspressoWithMilk();
-
-        var result = coffee.GetCost();
-
-        Assert.Equals(3.99, result);
-    }
+    
     public class Filtered
     {
         public string GetDescription()
@@ -65,15 +68,17 @@ namespace Decorator
     #endregion
 
     #region with_design
-    
+    public class testDesign{
+
     [Fact]
     public void Decorator_Expresoo_Chocolate_WitDesign()
     {
-        var coffee = new ChocolateDecorator(new Espresso());
+        // var coffee = new MilkDecorator(new ChocolateDecorator(new Espresso()));
 
-        var result = coffee.GetCost();
+        // var result = coffee.GetCost();
 
-        AssemblyLoadEventArgs.Equals(2.99, result);
+        // Assert.Equals(4.99, result);
+    }
     }
     
     public interface ICoffee
@@ -82,47 +87,29 @@ namespace Decorator
         double GetCost();
     }
 
-    public abstract class CondimentDecorator : ICoffee
-    {
-        ICoffee _coffee;
-    
-        protected string _name = "undefined condiment";
-        protected double _price = 0.0;
-    
-        public CondimentDecorator(ICoffee coffee)
-        {
-            _coffee = coffee;
-        }
-    
-        public string GetDescription()
-        {
-            return string.Format("{0}, {1}", _coffee.GetDescription(), _name);
-        }
-    
-        public double GetCost()
-        {
-            return _coffee.GetCost() + _price;
-        }
-    }
-    
-    public class MilkDecorator : CondimentDecorator
-    {
-        public MilkDecorator(ICoffee coffee)
-            :base(coffee)
-        {
-            _name = "Milk";
-            _price = 1;
-        }
-    }
- 
-    public class ChocolateDecorator : CondimentDecorator
-    {
-        public ChocolateDecorator(ICoffee coffee)
-            :base(coffee)
-        {
-            _name = "Chocolate";
-            _price = 2;
-        }
-    }
     #endregion
+
+    public class WithMilk : Condiment{
+        public WithMilk(){
+            cost = 1;
+            name = "milk";
+        }
+    }
+
+    public abstract class Condiment : ICoffee{
+
+        private ICoffee coffee;
+        public double cost{get; set;}
+        public String name;
+        public Condiment(ICoffee Coffee){
+            coffee = Coffee;
+        }
+
+        public string GetDescription(){
+            return coffee.GetDescription() + ", " + name;
+        }
+        public double GetCost(){
+            return coffee.GetCost() + cost;
+        }
+    }
 }
