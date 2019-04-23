@@ -120,6 +120,7 @@ namespace Adapter
         public List<string> GetEmployeeList()
         {
             List<string> employeeList = new List<string>();
+            //here the trick, we called what we want to adapt to convert into the desire signature.
             string[][] employees = GetEmployees();
 
             //Convert it 

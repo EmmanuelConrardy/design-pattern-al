@@ -1,4 +1,4 @@
-# Builder
+# Adapter
 
 Ce pattern permet aux objets avec des interfaces incompatibles de collaborer.
 
