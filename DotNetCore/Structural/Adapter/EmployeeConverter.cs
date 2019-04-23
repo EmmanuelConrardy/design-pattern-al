@@ -10,26 +10,7 @@ namespace Adapter
         [Fact]
         public void Adapter_WithoutDesign()
         {
-            //Our model with incompatible 
-            var companyEmplyees = new CompanyEmplyees();
-
-            List<string> employeeList = new List<string>();
-            string[][] employees = companyEmplyees.GetEmployees();
-
-            //Convert it 
-            foreach (string[] employee in employees)
-            {
-                employeeList.Add(employee[0]);
-                employeeList.Add(",");
-                employeeList.Add(employee[1]);
-                employeeList.Add(",");
-                employeeList.Add(employee[2]);
-                employeeList.Add("\n");
-            }
-
-            //We use a poor design to pass the data to third party
-            //Or an "helper" with the risk, it will become a trash class.
-            ITarget Itarget = new CompanyEmplyeesStub(employeeList);
+            var ITarget = new employeeListAdapter();
 
             ThirdPartyBillingSystem client = new ThirdPartyBillingSystem(Itarget);
             client.ShowEmployeeList();
@@ -37,8 +18,20 @@ namespace Adapter
 
         public class employeeListAdapter : CompanyEmplyees, ITarget
         {
-            public employeeListAdapter()
-            {
+            public List<string> GetEmployeeList() {
+                string [][] companyEmployeeArray = GetEmployees();
+                List<string> employeeList = new List<string>();
+
+                foreach (string[] employee in companyEmployeeArray)
+                {
+                    employeeList.Add(employee[0]);
+                    employeeList.Add(",");
+                    employeeList.Add(employee[1]);
+                    employeeList.Add(",");
+                    employeeList.Add(employee[2]);
+                    employeeList.Add("\n");
+                }
+                return employeeList;
             }
         }
 

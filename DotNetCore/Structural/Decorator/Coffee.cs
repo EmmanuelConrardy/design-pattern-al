@@ -6,7 +6,7 @@ namespace Decorator
 {
     #region without_design
     [Fact]
-    public void Adapter_Espresso_WithoutDesign()
+    public void Decorator_Espresso_WithoutDesign()
     {
         var coffee = new Espresso();
 
@@ -16,7 +16,7 @@ namespace Decorator
     }
 
     [Fact]
-    public void Adapter_EspressoWithMilk_WithoutDesign()
+    public void Decorator_EspressoWithMilk_WithoutDesign()
     {
         var coffee = new EspressoWithMilk();
 
@@ -67,7 +67,7 @@ namespace Decorator
     #region with_design
     
     [Fact]
-    public void Adapter_Expresoo_Chocolate_WitDesign()
+    public void Decorator_Expresoo_Chocolate_WitDesign()
     {
         var coffee = new ChocolateDecorator(new Espresso());
 
