@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace BuilderPattern
@@ -28,36 +29,42 @@ namespace BuilderPattern
                     City = "London",
                     Country = 2
                 };
+           
+            
+           
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("foo");
+            builder.AppendLine("bar");
+            builder.Replace("foo","bar");
+            var result = builder.ToString();
+
+            //You can instanciate it like this
+            var order = new Order(){
+                Tax = tax,
+                Items = items,
+                Address = address
+            };
+
             var orderBuilder = new OrderBuilder();
-            var orderFluent = orderBuilder
+            order = orderBuilder
                 .WithTax(tax)
                 .WithItems(items)
                 .WithAddress(address)
                 .Build();
-            
-            //You can instanciate it like this
-            var order = new Order(){
-                Tax = new Tax(){
-                    Rate = 20,
-                    Country = 2 // UK
-                },
-                Items = new List<Item>(){
-                    new Item(){
-                        Price = 10,
-                        Id = 1,
-                        Name = "plate"
-                    }
-                },
-                Address = new Address(){
-                    AddressLine = "2 backer street",
-                    Zipcode = "KJ87C0",
-                    City = "London",
-                    Country = 2
-                }
-            };
 
-           
-            var orderSecondByTelescopicConstructor = new Order(tax,items,address,address);
+            Assert.Equal(address, order.Address);
+            Assert.Equal(tax, order.Tax);
+            Assert.Equal(items, order.Items);
+
+
+           var orderbuild = new OrderBuilder();
+            var orderSecondByTelescopicConstructor = new Order(tax,items,address,null);
+            
+            orderSecondByTelescopicConstructor = 
+            orderbuild.WithTax(tax)
+                    .WithItems(items)
+                    .WithTax(tax)
+                    .Build();
 
             //Or like this...
             var orderThirdByTelescopicConstructor = new Order(tax,items){
