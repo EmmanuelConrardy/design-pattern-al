@@ -14,7 +14,7 @@ En revanche sont &eacute;criture est assez volumineuse et augmente la complexit&
 
 Un recette de cuisine est un builder. 
 En effet si on devait juste pr&eacute;parer un plat du genre "p&acirc;te au fromage" pas besoin de recette, on peut facilement "instancier" le plat en revanche si on souhaite pr&eacute;parer un "tournedos rossini" il faut "d&eacute;crire" chaque &eacute;tapes dans une recette &agrave; suivre pour concevoir notre plat de mani&egrave;re suffisamment claire et "r&eacute;-utilisable" par n'importe qui. 
-De plus il facile d'ajouter et d'adapter des &eacute;tapes pour modifier ou am&eacute;liorer la recette.
+De plus il est facile d'ajouter et d'adapter des &eacute;tapes pour modifier ou am&eacute;liorer la recette.
 On pourra donc facilement faire un "tournedos rossini aux figues" sans modifier un &eacute;ventuel constructeur.
 
 ## Liens
