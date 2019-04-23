@@ -12,5 +12,4 @@ L'exemple parfait pour l'adaptaeur sont l'utilisation des prises &eacute;lectriq
 
 ## Liens
 
-https://refactoring.guru/design-patterns/builder
-https://blog.xebia.fr/2016/12/28/design-pattern-builder-et-builder-sont-dans-un-bateau/
+https://refactoring.guru/design-patterns/Adapter

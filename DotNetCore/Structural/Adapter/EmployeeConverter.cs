@@ -28,11 +28,20 @@ namespace Adapter
             }
 
             //We use a poor design to pass the data to third party
+            //Or an "helper" with the risk, it will become a trash class.
             ITarget Itarget = new CompanyEmplyeesStub(employeeList);
 
             ThirdPartyBillingSystem client = new ThirdPartyBillingSystem(Itarget);
             client.ShowEmployeeList();
         }
+
+        public class employeeListAdapter : CompanyEmplyees, ITarget
+        {
+            public employeeListAdapter()
+            {
+            }
+        }
+
         public class CompanyEmplyeesStub : ITarget
         {
             private List<string> EmployeeList { get; set; }
@@ -44,15 +53,15 @@ namespace Adapter
         }
         #endregion WithoutDesign
 
-        #region WithDesign
-        [Fact]
-        public void Adapter_With_Design()
-        {
-            ITarget Itarget = new EmployeeAdapter();
-            ThirdPartyBillingSystem client = new ThirdPartyBillingSystem(Itarget);
-            client.ShowEmployeeList();
-        }
-        #endregion WithDesign
+        // #region WithDesign
+        // [Fact]
+        // public void Adapter_With_Design()
+        // {
+        //     ITarget Itarget = new EmployeeAdapter();
+        //     ThirdPartyBillingSystem client = new ThirdPartyBillingSystem(Itarget);
+        //     client.ShowEmployeeList();
+        // }
+        // #endregion WithDesign
     }
 
     /// <summary>
@@ -115,26 +124,4 @@ namespace Adapter
     /// <summary>
     /// Adapter: This is the class which would implement ITarget and would call the Adaptee code which the client wants to call.
     /// </summary>
-    public class EmployeeAdapter : CompanyEmplyees, ITarget
-    {
-        public List<string> GetEmployeeList()
-        {
-            List<string> employeeList = new List<string>();
-            //here the trick, we called what we want to adapt to convert into the desire signature.
-            string[][] employees = GetEmployees();
-
-            //Convert it 
-            foreach (string[] employee in employees)
-            {
-                employeeList.Add(employee[0]);
-                employeeList.Add(",");
-                employeeList.Add(employee[1]);
-                employeeList.Add(",");
-                employeeList.Add(employee[2]);
-                employeeList.Add("\n");
-            }
-
-            return employeeList;
-        }
-    }
 }
