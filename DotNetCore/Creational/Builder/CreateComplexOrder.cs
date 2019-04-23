@@ -11,6 +11,30 @@ namespace BuilderPattern
         [Fact]
         public void Use_Builder_Without_Design_Pattern()
         {
+            var tax = new Tax(){
+                    Rate = 20,
+                    Country = 2 // UK
+                };
+                var items = new List<Item>(){
+                    new Item(){
+                        Price = 10,
+                        Id = 1,
+                        Name = "plate"
+                    }
+                };
+                var address = new Address(){
+                    AddressLine = "2 backer street",
+                    Zipcode = "KJ87C0",
+                    City = "London",
+                    Country = 2
+                };
+            var orderBuilder = new OrderBuilder();
+            var orderFluent = orderBuilder
+                .WithTax(tax)
+                .WithItems(items)
+                .WithAddress(address)
+                .Build();
+            
             //You can instanciate it like this
             var order = new Order(){
                 Tax = new Tax(){
@@ -32,26 +56,8 @@ namespace BuilderPattern
                 }
             };
 
-            //Or like this
-            var tax = new Tax(){
-                                Rate = 20,
-                                Country = 1 // FR
-                            };
-            var items = new List<Item>(){
-                                new Item(){
-                                    Price = 10,
-                                    Id = 1,
-                                    Name = "Plate"
-                                }};
-            var address = new Address(){
-                                AddressLine = "2 backer street",
-                                Zipcode = "KJ87C0",
-                                City = "London",
-                                Country = 2
-                            };
-
-            var orderSecondByTelescopicConstructor = new Order(tax,items,address){
-            };
+           
+            var orderSecondByTelescopicConstructor = new Order(tax,items,address,address);
 
             //Or like this...
             var orderThirdByTelescopicConstructor = new Order(tax,items){
@@ -70,86 +76,56 @@ namespace BuilderPattern
         }
         #endregion
 
-        #region With Design
+      public interface IOrderBuilder{
+           IOrderBuilder WithTax(Tax tax);
 
-        //An fluent interface with all the "steps" to build our object
-        //We return the interface after each step to create a kind of "fluent" build
-        public interface IOrderBuilder
-        {
-            IOrderBuilder BuildTax(int tax, int country);
-            IOrderBuilder BuildItems(params Item[] items);
-            IOrderBuilder BuildAddress(string addressLine, string Zipcode, string city, int country);
-            Order Build();
-        }
+           IOrderBuilder WithItems(List<Item> items);
 
-        //A concrete class with methods
+           IOrderBuilder WithAddress(Address address);
+
+            IOrderBuilder WithBillingAddress(Address billingAddress);
+           Order Build();
+
+      }
+
         public class OrderBuilder : IOrderBuilder
         {
-            private Order _order;
-
-            public OrderBuilder()
-            {
-                _order = new Order();
-            }
-
-            public IOrderBuilder BuildAddress(string addressLine, string Zipcode, string city, int country)
-            {
-                _order.Address = new Address(addressLine,Zipcode, city, country);
-                return this;
-            }
-
-            public IOrderBuilder BuildItems(params Item[] items)
-            {
-                _order.Items = items.ToList();
-                return this;
-            }
-
-            public IOrderBuilder BuildTax(int tax, int country)
-            {
-                _order.Tax = new Tax(tax,country);
-                return this;
-            }
-
-             public Order Build()
-            {
-                return _order;
-            }
-        }
-
-        //An accessor for the builder
-        private OrderBuilder _orderBuilder => new OrderBuilder();
         
-        [Fact]
-        public void Use_Builder_With_Design_Pattern()
-        {
-            var order = _orderBuilder
-                            .BuildTax(20, 2)
-                            .BuildItems(NewItem("plate", 10, 1))
-                            .BuildAddress("2 backer street", "KJ87C0", "London", 2)
-                            .Build();
-          
-            var orderSecond = _orderBuilder
-                            .BuildTax(20, 2)
-                            .BuildItems(
-                                NewItem("plate", 10, 1), 
-                                NewItem("bottle",2,1)
-                             )
-                            .BuildAddress("2 backer street", "KJ87C0", "London", 2)
-                            .Build();
-            
+            public OrderBuilder(){
+                Order = new Order();
+            }
 
-            //It is more readable and copy paste is not a problem anymore
-            //Change in the creation is simple ! play with it
-            //The down side it's it need a lot of code / effort to implement this
+            private Order Order { get; set; }
+
+            public Order Build()
+            {
+                return Order;
+            }
+
+            public IOrderBuilder WithAddress(Address address)
+            {
+                Order.Address = address;
+                return this;
+            }
+
+            public IOrderBuilder WithItems(List<Item> items)
+            {
+                Order.Items = items;
+                return this;
+            }
+
+            public IOrderBuilder WithTax(Tax tax)
+            {
+               Order.Tax = tax;
+               return this;
+            }
+
+            public IOrderBuilder WithBillingAddress(Address billingAddress)
+            {
+                Order.BillingAddress = billingAddress;
+                return this;
+            }
         }
-
-        //A small factory
-        private static Item NewItem(string name, decimal price, int id)
-        {
-            return new Item(name, price, id);
-        }
-        #endregion
-
         //Our models
         public class Order{
             public Order(){ }
@@ -162,16 +138,18 @@ namespace BuilderPattern
                 Tax = tax;
                 Items = items;
             }
-            public Order(Tax tax, List<Item> items, Address address)
+            public Order(Tax tax, List<Item> items, Address address, Address billingAddress)
             {
                 Tax = tax;
                 Items = items;
                 Address = address;
+                BillingAddress = billingAddress;
             }
 
             public Tax Tax {get; set;}
             public List<Item> Items {get; set;}
             public Address Address {get; set;}
+            public Address BillingAddress {get; set;} 
         }
         public class Tax{
             public Tax() {}
