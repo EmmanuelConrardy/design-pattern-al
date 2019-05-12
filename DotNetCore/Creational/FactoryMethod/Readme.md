@@ -6,7 +6,6 @@ Ce pattern d&eacute;finie une interface ou une classe abstraite pour cr&eacute;e
 
 Quand on souhaite cr&eacute;er une famille d'objet. Attention on peut introduire beaucoup de sous-classe ce qui peut rendre le notre application plus complexe.
 
-
 ## Images / analogie
 
 Tous les type de famille peuvent être r&eacute;psent&eacute; par une factory method. On pourrait imaginer une famille le "GrandPere", "Pere", "GrandMere", "Maman", "Soeur", "Fils" sans oublier la "Tante". 
