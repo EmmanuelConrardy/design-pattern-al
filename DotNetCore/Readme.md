@@ -9,3 +9,7 @@ Often, people only understand how to apply certain software design techniques to
 In addition, patterns allow developers to communicate using well-known, well understood names for software interactions. Common design patterns can be improved over time, making them more robust than ad-hoc designs.
 
 source : https://sourcemaking.com/design_patterns
+
+##How to build / test
+Build all projects : dotnet build .\DesignPattern.sln
+Test all projects : dotnet test .\DesignPattern.sln
