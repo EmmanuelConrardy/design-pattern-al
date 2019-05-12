@@ -8,7 +8,7 @@ Quand on souhaite faire communiquer des services tiers incompatibles avec les no
 
 ## Images / analogie
 
-L'exemple parfait pour l'adaptaeur sont l'utilisation des prises &eacute;lectriques anglaises en France sans l'adapteur ces prises sont juste inutilisable.
+L'exemple parfait pour l'adaptaeur est l'utilisation des prises &eacute;lectriques anglaises en France, sans l'adapteur ces prises sont juste inutilisable.
 
 ## Liens
 
