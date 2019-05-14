@@ -40,6 +40,36 @@ namespace ChainOfResponsibility
             //Assert
             Assert.True(p.HasbeenValidated);
         }
+    
+        [Fact]
+        public void JonathanPizzaValidation()
+        {
+            // Arrange
+            Approver Jonathan = new Intern();
+            var request = new PurchaseOrder(4, 2000, 20000, "Pizzas");
+
+            // Act
+            Jonathan.ValidatePurchaseOrder(request);
+
+            // Assert
+            Assert.True(request.HasbeenValidated);
+        }
+
+        [Fact]
+        public void JonathanOliviaSushiValidation()
+        {
+            // Arrange
+            Approver Jonathan = new Intern();
+            Approver Olivia = new GeneralManager();
+            Jonathan.SetSupervisor(Olivia);
+            var sushiPurchase = new PurchaseOrder(6, 2500, 1250000, "Sushis");
+
+            // Act
+            Jonathan.ValidatePurchaseOrder(sushiPurchase);
+
+            // Assert
+            Assert.True(sushiPurchase.HasbeenValidated);
+        }
     }
 
    /// <summary>
@@ -92,6 +122,20 @@ namespace ChainOfResponsibility
         public abstract void ValidatePurchaseOrder(PurchaseOrder purchase);
     }
 
+    public class Intern : Approver
+    {
+        public override void ValidatePurchaseOrder(PurchaseOrder purchase)
+        {
+            if (purchase.Name == "Pizzas")
+            {
+                purchase.HasbeenValidated = true;
+            } else if (Supervisor != null)
+            {
+                Supervisor.ValidatePurchaseOrder(purchase);
+            }
+        }
+    }
+
     /// <summary>
     /// A concrete Handler class
     /// </summary>
@@ -139,7 +183,7 @@ namespace ChainOfResponsibility
     {
         public override void ValidatePurchaseOrder(PurchaseOrder purchase)
         {
-            if (purchase.Price < 10000)
+            if (purchase.Price < 10000 || purchase.Name == "Sushis")
             {
                 Console.WriteLine("{0} approved purchase request #{1}",
                     this.GetType().Name, purchase.RequestNumber);
@@ -159,8 +203,13 @@ namespace ChainOfResponsibility
     /// </summary>
     public class PurchaseOrder
     {
-
-        // Constructor
+        /// <summary>
+        /// Commande General a valider
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="amount"></param>
+        /// <param name="price"></param>
+        /// <param name="name"></param>
         public PurchaseOrder(int number, double amount, double price, string name)
         {
             RequestNumber = number;
