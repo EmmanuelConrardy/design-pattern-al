@@ -20,8 +20,16 @@ namespace State
              account.AddTemp(20);    
              account.AddTemp(20);    
 
-            Assert.True(account.State.CanEat);             
-
+            Assert.True(account.State.CanEat);
+        }
+        [Fact]
+        public void SteakBurnedCantEat()
+        {
+            // arrange
+            var steak = new Steak("ex-Cow");
+            // act
+            // assert
+            Assert.Throws<Exception>(() => steak.AddTemp(5000));
         }
     }
 
@@ -107,6 +115,7 @@ namespace State
             this.currentTemp = currentTemp;
             this.steak = steak;
             Initialize();
+            DonenessCheck();
         }
 
         private void Initialize()
@@ -153,6 +162,7 @@ namespace State
             this.steak = steak;
             canEat = true;
             Initialize();
+            DonenessCheck();
         }
 
         private void Initialize()
@@ -202,6 +212,7 @@ namespace State
             this.steak = steak;
             canEat = true;
             Initialize();
+            DonenessCheck();
         }
 
         private void Initialize()
@@ -251,6 +262,7 @@ namespace State
             this.steak = steak;
             canEat = true;
             Initialize();
+            DonenessCheck();
         }
 
         private void Initialize()
@@ -280,6 +292,54 @@ namespace State
             else if (currentTemp < lowerTemp)
             {
                 steak.State = new Medium(this);
+            }
+            else if (currentTemp > upperTemp)
+            {
+                steak.State = new Burned(this);
+            }
+        }
+    }
+
+    class Burned : Doneness
+    {
+        public Burned (Doneness state) : this(state.CurrentTemp, state.Steak)
+        {
+
+        }
+
+        public Burned (double currentTemp, Steak steak)
+        {
+            this.currentTemp = currentTemp;
+            this.steak = steak;
+            this.Initialize();
+            this.canEat = false;
+            DonenessCheck();
+        }
+
+        private void Initialize()
+        {
+            this.upperTemp = int.MaxValue;
+            this.lowerTemp = 230;
+        }
+
+        public override void RemoveTemp(double temp)
+        {
+            this.currentTemp -= temp;
+            DonenessCheck();
+        }
+
+        public override void AddTemp(double temp)
+        {
+            //stupide verification
+            DonenessCheck();
+        }
+
+        public override void DonenessCheck()
+        {
+            if (this.currentTemp > 500)
+            {
+                throw new Exception("the steak temperature exceeded security level: "
+                    + this.currentTemp + "! seek immediate shelter");
             }
         }
     }
