@@ -3,18 +3,26 @@ using Xunit;
 
 namespace Command
 {
-    public class CommandWithoutDesign
+    public class CommandWithoutDesignTests
     {
         [Fact]
-        public void Test1()
+        public void Jump()
         {
-           
-        }
+            var game = new Game();
+            var actor = game.actor;
 
+            game.Press("X");
+
+            Assert.Equal("Jump", actor.CurrentAction);
+        }
     }
 
     public class Game
     {
+        public Game()
+        {
+            actor = new Actor();
+        }
         private string BUTTON_X = "X";
         public string BUTTON_Y = "Y";
         public string BUTTON_A = "A";
@@ -22,7 +30,7 @@ namespace Command
 
         public Actor actor;
 
-        public void InputHandler(string button)
+        public void Press(string button)
         {
             if (button == BUTTON_X) Jump();
             else if (button == BUTTON_Y) FireGun();
@@ -53,19 +61,21 @@ namespace Command
 
     public class Actor
     {
+        public string CurrentAction { get; internal set; }
+
         internal void FirGun()
         {
-            throw new NotImplementedException();
+            CurrentAction = "Fire";
         }
 
         internal void Jump()
         {
-            throw new NotImplementedException();
+            CurrentAction = "Jump";
         }
 
         internal void SwapWeapon()
         {
-            throw new NotImplementedException();
+            CurrentAction = "Swap";
         }
     }
 }
