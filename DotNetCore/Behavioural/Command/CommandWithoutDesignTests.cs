@@ -35,12 +35,12 @@ namespace Command
             if (button == BUTTON_X) Jump();
             else if (button == BUTTON_Y) FireGun();
             else if (button == BUTTON_A) SwapWeapon();
-            else if (button == BUTTON_B) LurchIneffectively();
+            else if (button == BUTTON_B) Taunt();
         }
 
-        private void LurchIneffectively()
+        private void Taunt()
         {
-            throw new NotImplementedException();
+            actor.Taunt();
         }
 
         private void SwapWeapon()
@@ -76,6 +76,11 @@ namespace Command
         internal void SwapWeapon()
         {
             CurrentAction = "Swap";
+        }
+
+        internal void Taunt()
+        {
+            CurrentAction = "Taunt";
         }
     }
 }
