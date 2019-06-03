@@ -1,6 +1,6 @@
 ﻿# Visitor
 Ce patron repr&eacute;sente une op&eacute;ration &agrave; effectuer sur un ensemble d'objets. 
-Permet de modifier l'op&eacute;ration sans changer l'objet concern&eacute; ni la structure. 
+Il permet de modifier l'op&eacute;ration sans changer l'objet concern&eacute; ni la structure. 
 Selon ce patron, les objets &agrave; modifier sont pass&eacute;s en param&egrave;tre &agrave; une classe tierce qui effectuera des modifications. Une classe abstraite Visitor d&eacute;finit l'interface de la classe tierce. Ce patron est utilis&eacute; notamment pour manipuler un jeu d'objets, où les objets peuvent avoir diff&eacute;rentes interfaces, qui ne peuvent pas être modifi&eacute;s
 
 ## Exemple d'utilisation
