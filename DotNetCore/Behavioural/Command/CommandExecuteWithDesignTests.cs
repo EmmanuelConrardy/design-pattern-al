@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.CompilerServices;
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -16,30 +18,60 @@ namespace Command.Execute
             user.Compute('-', 50);
             user.Compute('*', 10);
             user.Compute('/', 2);
+            user.Compute('*', 4);
 
+            Assert.Equal(1000, user.GetResult());
+        }
+
+        [Fact]
+        public void ApplyCommandTestUndo()
+        {
+            User user = new User();
+
+            // User presses calculator buttons
+            user.Compute('+', 100);
+            user.Compute('-', 50);
+            user.Compute('*', 10);
+            user.Compute('/', 2);
+            user.Compute('*', 4);
+            user.Undo();
+            user.Compute('*', 4);
+            user.Undo();
+            user.Undo();
+            Assert.Equal(500, user.GetResult());
+            user.Redo();
             Assert.Equal(250, user.GetResult());
+            user.Redo();
+            Assert.Equal(1000, user.GetResult());
         }
     }
 
-    /// <summary>
-    /// The 'Command' abstract class
-    /// </summary>
-    abstract class Command
 
+    abstract class Command
     {
-        public abstract void Execute();
+        public virtual void Execute(){}
+
+        public virtual void UnExecute(){}
     }
 
     /// <summary>
     /// The 'ConcreteCommand' class
     /// </summary>
     class CalculatorCommand : Command
-
     {
         private char _operator;
         private int _operand;
         private Calculator _calculator;
 
+        public override void Execute()
+        {
+            _calculator.Operation(_operator, _operand);
+        }
+
+        public override void UnExecute()
+        {
+            _calculator.Operation(Invert(_operator), _operand);
+        }
         public CalculatorCommand(Calculator calculator,
           char @operator, int operand)
         {
@@ -47,11 +79,17 @@ namespace Command.Execute
             this._operator = @operator;
             this._operand = operand;
         }
-
-        // Execute new command
-        public override void Execute()
+        private char Invert(char @operator)
         {
-            _calculator.Operation(_operator, _operand);
+            switch (@operator)
+            {
+                
+                case '+': return '-'; 
+                case '-': return '+'; 
+                case '*': return '/'; 
+                case '/': return '*';
+                default: return '-'; 
+            }
         }
     }
 
@@ -87,6 +125,8 @@ namespace Command.Execute
     {
         // Initializers
         private Calculator _calculator = new Calculator();
+        private List<Command> _cmdList = new List<Command>();
+        private int _position = 0;
         public int GetResult()
         {
             return _calculator.DisplayResult();
@@ -94,11 +134,30 @@ namespace Command.Execute
 
         public void Compute(char @operator, int operand)
         {
-            // Create command operation and execute it
-            Command command = new CalculatorCommand(
-              _calculator, @operator, operand);
-
+            var command = new CalculatorCommand(_calculator, @operator, operand);
             command.Execute();
+            _cmdList.Insert(_position++, command);
+
+        }
+
+        public void Undo()
+        {
+            var command = _cmdList[_position - 1];
+            if (command != null)
+            {
+                command.UnExecute();
+                --_position;
+            }
+        }
+
+        internal void Redo()
+        {
+            var command = _cmdList[_position];
+            if (command != null)
+            {
+                command.Execute();
+                ++_position;
+            }
         }
     }
 }
